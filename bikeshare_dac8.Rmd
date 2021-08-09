@@ -24,6 +24,7 @@ opts_chunk$set(echo=TRUE,
                tidy=TRUE,
                comment=NA,
                message=TRUE,
+               error=FALSE,
                warning=FALSE)
 opts_knit$set(width=75)
 ```
