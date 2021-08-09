@@ -1,2 +1,8 @@
+
 # DAC8-Case-Study-1
-Case Study 1 - Google Data Analytics Capstone Project
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of DAC8-Case-Study-1 is to ...
+
