@@ -7,7 +7,7 @@ output: github_document
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  echo = FALSE,
+  echo = TRUE,
   error=FALSE,
   message=FALSE,
   comment = "#>"
@@ -328,15 +328,13 @@ bikeshare_data |>
   geom_smooth()+
   ggthemes::scale_color_colorblind()+
   ggthemes::scale_fill_colorblind()+
-  #scale_y_continuous(labels = function(x) format(x, scientific = FALSE))+
   ggthemes::theme_hc()+
-  #theme(legend.position="none")+
   labs(
       title = "Number of trips by he hour of the day",
       color = "Type of user",
       fill = "Type of user",
       x = "hour of the day",
-      y = "Duration of the trips"
+      y = "Trip duration (min)"
     )
 
 ```
@@ -398,11 +396,11 @@ bikeshare_data |>
   ggthemes::scale_fill_colorblind()+
   ggthemes::theme_hc()+
   labs(
-      title = "Number of trips by he hour of the day",
+      title = "Number of trips by the Months",
       color = "Type of user",
       fill = "Type of user",
       x = "hour of the day",
-      y = "Duration of the trips"
+      y = "Trip duration (min)"
     )
 
 ```
@@ -467,8 +465,8 @@ bikeshare_data |>
   ggthemes::theme_hc()+
   labs(
       title = "Number of trips by he hour of the day",
-      color = "Type of user",
-      fill = "Type of user",
+      color = "Type of bike",
+      fill = "Type of bike",
       x = "hour of the day",
       y = "No. of trips"
     )+
@@ -486,11 +484,11 @@ bikeshare_data |>
   ggthemes::scale_fill_colorblind()+
   ggthemes::theme_hc()+
   labs(
-      title = "Number of trips by the hour of the day",
+      title = "Duration of the trips by the type of the bike",
       color = "Type of bike",
       fill = "Type of bike",
       x = "hour of the day",
-      y = "No. of trips"
+      y = "Trip duration (min)"
     )+
   facet_wrap(vars(member_casual))
 
