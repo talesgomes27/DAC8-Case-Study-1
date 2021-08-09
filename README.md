@@ -11,6 +11,10 @@ Analytics professional
 certificate](https://www.coursera.org/professional-certificates/google-data-analytics)
 in Coursera.
 
+Acess the the
+<a href="talesgomes27.github.io/DAC8-Case-Study-1/bikeshare_dac8.html" title="Rmarkdown document">Rmarkdown
+document</a>
+
 ## Scenario
 
 You are a junior data analyst working in the marketing analyst team at
@@ -25,7 +29,7 @@ with compelling data insights and professional data visualizations.
 
 ## Ask Phase
 
-<u>**Guiding questions**</u>
+**Guiding questions**
 
 1.  What is the problem you are trying to solve?
 
