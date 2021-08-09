@@ -11,9 +11,11 @@ Analytics professional
 certificate](https://www.coursera.org/professional-certificates/google-data-analytics)
 in Coursera.
 
-Acess the the
-<a href="bikeshare_dac8.html" title="Rmarkdown document">Rmarkdown
-document</a>
+-   The project statements can be acess
+    <a href="DAC8-Case-Study-1.pdf" target="here">here</a>.
+
+-   Acess the the Rmarkdown document
+    <a href="bikeshare_dac8.html" title="here">here</a>.
 
 ## Scenario
 
