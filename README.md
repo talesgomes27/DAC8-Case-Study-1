@@ -12,7 +12,7 @@ certificate](https://www.coursera.org/professional-certificates/google-data-anal
 in Coursera.
 
 Acess the the
-<a href="talesgomes27.github.io/DAC8-Case-Study-1/bikeshare_dac8.html" title="Rmarkdown document">Rmarkdown
+<a href="bikeshare_dac8.html" title="Rmarkdown document">Rmarkdown
 document</a>
 
 ## Scenario
