@@ -1,32 +1,33 @@
 ---
-output: github_document
+title: "Case Study: How Does a Bike-Share Navigate Speedy Success?"
+subtitle: "Case Study 1 - Google Data Analytics Capstone Project"
+author: "Tales Gomes"
+date: "`r Sys.Date()`"
+output:
+  rmdformats::downcute:
+    self_contained: true
+    thumbnails: false
+    lightbox: true
+    gallery: true
+    
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+```{r setup, include=FALSE}
+library(knitr)
+library(rmdformats)
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  echo = TRUE,
-  error=FALSE,
-  message=FALSE,
-  comment = "#>"
-)
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=TRUE,
+               error=FALSE,
+               warning=FALSE)
+opts_knit$set(width=75)
 ```
-
-# Case Study: How Does a Bike-Share Navigate Speedy Success?
-
-<!-- badges: start -->
-<!-- badges: end -->
-
-This project is the Capstone project that is part of the [Google Data Analytics professional certificate](https://www.coursera.org/professional-certificates/google-data-analytics) in Coursera.
-
-
- - The project statements can be acess <a href="DAC8-Case-Study-1.pdf" target="here">here</a>.
-
-
- - Acess the the Rmarkdown document <a href="bikeshare_dac8.html" title="here">here</a>.
-
 
 
 ## Scenario
@@ -35,7 +36,7 @@ You are a junior data analyst working in the marketing analyst team at Cyclistic
 
 ## Ask Phase
 
-**Guiding questions**
+[**Guiding questions**]{.ul}
 
 1.  What is the problem you are trying to solve?
 
@@ -112,7 +113,7 @@ library(tidyverse) # used to filter the data
 library(lubridate) #used to work with date class. 
 
 #loding the files name and 
-files <- fs::dir_ls(path = "database/")
+files <- fs::dir_ls(path = "../database/")
 files
 
 bikeshare_data <- vroom::vroom(files,
