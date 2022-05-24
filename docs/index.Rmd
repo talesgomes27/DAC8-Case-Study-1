@@ -14,7 +14,7 @@ output:
       in_header:
         - hero-image.html
     css:
-      - style.css    
+      - css/style.css    
 ---
 
 ```{r setup, include=FALSE}
@@ -136,7 +136,7 @@ bikeshare_data <- vroom::vroom(files,
 
 ```{r}
 
-head(bikeshare_data)
+glimpse(bikeshare_data)
 
 
 ```
@@ -259,8 +259,7 @@ glimpse(bikeshare_data)
 
 bikeshare_summary <- bikeshare_data |>
   select(-c(ride_id, start_station_name, trip_route)) |>
-  describe(descript = "Statistical Description Summary")
-
+  describe(descript = "Statistical Description Summary", tabular = TRUE)
 
 html(bikeshare_summary, exclude1=TRUE, align= "c", scroll = TRUE, rows = 50)
 
