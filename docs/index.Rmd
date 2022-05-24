@@ -7,7 +7,7 @@ output:
   html_document:
     theme: paper  
     code_folding: "hide"
-    self-contained: false
+    self-contained: true
     toc: true
     toc_float: true
     includes:
