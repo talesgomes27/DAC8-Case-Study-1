@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2022-05-24" />
+<meta name="date" content="2022-05-26" />
 
 <title>Tales Gomes</title>
 
@@ -1956,7 +1956,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Tales Gomes</h1>
 <h3 class="subtitle">Data Analyst</h3>
-<h4 class="date">2022-05-24</h4>
+<h4 class="date">2022-05-26</h4>
 
 </div>
 
@@ -2059,12 +2059,40 @@ analysis.</li>
 <li>Ingesting the data using the <a href="https://vroom.r-lib.org/articles/vroom.html">vroom</a> library and
 loading into the bikeshare_data.</li>
 </ul>
-<pre class="r"><code>library(tidyverse)  # used to filter the data
-library(lubridate)  #used to work with date class. 
-library(Hmisc)
-library(kableExtra)
+<pre class="r"><code>library(tidyverse)  # used to filter the data</code></pre>
+<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>✔ ggplot2 3.3.6     ✔ purrr   0.3.4
+✔ tibble  3.1.7     ✔ dplyr   1.0.9
+✔ tidyr   1.2.0     ✔ stringr 1.4.0
+✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(lubridate)  #used to work with date class. </code></pre>
+<pre><code>
+Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
 
-# loding the files name and
+    date, intersect, setdiff, union</code></pre>
+<pre class="r"><code>library(Hmisc)</code></pre>
+<pre><code>Carregando pacotes exigidos: lattice</code></pre>
+<pre><code>Carregando pacotes exigidos: survival</code></pre>
+<pre><code>Carregando pacotes exigidos: Formula</code></pre>
+<pre><code>
+Attaching package: &#39;Hmisc&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:dplyr&#39;:
+
+    src, summarize</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    format.pval, units</code></pre>
+<pre class="r"><code>library(kableExtra)</code></pre>
+<pre><code>
+Attaching package: &#39;kableExtra&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:dplyr&#39;:
+
+    group_rows</code></pre>
+<pre class="r"><code># loding the files name and
 files &lt;- fs::dir_ls(path = &quot;../database/&quot;)
 files</code></pre>
 <pre><code>../database/202007-divvy-tripdata.csv ../database/202008-divvy-tripdata.csv 
@@ -2077,8 +2105,8 @@ files</code></pre>
 ../database/202109-divvy-tripdata.csv ../database/202110-divvy-tripdata.csv 
 ../database/202111-divvy-tripdata.csv ../database/202112-divvy-tripdata.csv </code></pre>
 <pre class="r"><code>bikeshare_data &lt;- vroom::vroom(files, col_names = TRUE)</code></pre>
-<pre><code>Rows: 8081804 Columns: 13
-── Column specification ────────────────────────────────────────────────────────
+<pre><code>Rows: 8081804 Columns: 13</code></pre>
+<pre><code>── Column specification ────────────────────────────────────────────────────────
 Delimiter: &quot;,&quot;
 chr  (7): ride_id, rideable_type, start_station_name, start_station_id, end_...
 dbl  (4): start_lat, start_lng, end_lat, end_lng
@@ -2086,19 +2114,22 @@ dttm (2): started_at, ended_at
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>head(bikeshare_data)</code></pre>
-<pre><code># A tibble: 6 × 13
-  ride_id rideable_type started_at          ended_at            start_station_n…
-  &lt;chr&gt;   &lt;chr&gt;         &lt;dttm&gt;              &lt;dttm&gt;              &lt;chr&gt;           
-1 762198… docked_bike   2020-07-09 15:22:02 2020-07-09 15:25:52 Ritchie Ct &amp; Ba…
-2 BEC9C9… docked_bike   2020-07-24 23:56:30 2020-07-25 00:20:17 Halsted St &amp; Ro…
-3 D2FD8E… docked_bike   2020-07-08 19:49:07 2020-07-08 19:56:22 Lake Shore Dr &amp;…
-4 54AE59… docked_bike   2020-07-17 19:06:42 2020-07-17 19:27:38 LaSalle St &amp; Il…
-5 54025F… docked_bike   2020-07-04 10:39:57 2020-07-04 10:45:05 Lake Shore Dr &amp;…
-6 65636B… docked_bike   2020-07-28 16:33:03 2020-07-28 16:49:10 Fairbanks St &amp; …
-# … with 8 more variables: start_station_id &lt;chr&gt;, end_station_name &lt;chr&gt;,
-#   end_station_id &lt;chr&gt;, start_lat &lt;dbl&gt;, start_lng &lt;dbl&gt;, end_lat &lt;dbl&gt;,
-#   end_lng &lt;dbl&gt;, member_casual &lt;chr&gt;</code></pre>
+<pre class="r"><code>glimpse(bikeshare_data)</code></pre>
+<pre><code>Rows: 8,081,804
+Columns: 13
+$ ride_id            &lt;chr&gt; &quot;762198876D69004D&quot;, &quot;BEC9C9FBA0D4CF1B&quot;, &quot;D2FD8EA432…
+$ rideable_type      &lt;chr&gt; &quot;docked_bike&quot;, &quot;docked_bike&quot;, &quot;docked_bike&quot;, &quot;docke…
+$ started_at         &lt;dttm&gt; 2020-07-09 15:22:02, 2020-07-24 23:56:30, 2020-07-…
+$ ended_at           &lt;dttm&gt; 2020-07-09 15:25:52, 2020-07-25 00:20:17, 2020-07-…
+$ start_station_name &lt;chr&gt; &quot;Ritchie Ct &amp; Banks St&quot;, &quot;Halsted St &amp; Roscoe St&quot;, …
+$ start_station_id   &lt;chr&gt; &quot;180&quot;, &quot;299&quot;, &quot;329&quot;, &quot;181&quot;, &quot;268&quot;, &quot;635&quot;, &quot;113&quot;, &quot;2…
+$ end_station_name   &lt;chr&gt; &quot;Wells St &amp; Evergreen Ave&quot;, &quot;Broadway &amp; Ridge Ave&quot;,…
+$ end_station_id     &lt;chr&gt; &quot;291&quot;, &quot;461&quot;, &quot;156&quot;, &quot;94&quot;, &quot;301&quot;, &quot;289&quot;, &quot;140&quot;, &quot;31…
+$ start_lat          &lt;dbl&gt; 41.90687, 41.94367, 41.93259, 41.89076, 41.91172, 4…
+$ start_lng          &lt;dbl&gt; -87.62622, -87.64895, -87.63643, -87.63170, -87.626…
+$ end_lat            &lt;dbl&gt; 41.90672, 41.98404, 41.93650, 41.91831, 41.90799, 4…
+$ end_lng            &lt;dbl&gt; -87.63483, -87.66027, -87.64754, -87.63628, -87.631…
+$ member_casual      &lt;chr&gt; &quot;member&quot;, &quot;member&quot;, &quot;casual&quot;, &quot;casual&quot;, &quot;member&quot;, &quot;…</code></pre>
 </div>
 <div id="verifing-missing-values" class="section level3">
 <h3>Verifing missing values</h3>
@@ -2171,25 +2202,36 @@ bikeshare_data &lt;- bikeshare_data |&gt;
             hour(started_at) &gt;= 12 &amp; hour(started_at) &lt; 18 ~ &quot;afternoon&quot;, hour(started_at) &gt;=
                 18 ~ &quot;night&quot;), trip_route = str_c(start_station_name, end_station_name,
             sep = &quot; to &quot;)) |&gt;
-    relocate(trip_route, .before = start_station_name) |&gt;
-    # select(-(started_at:end_lng)) |&gt;
-mutate(is_weekend = factor(is_weekend, levels = c(&quot;yes&quot;, &quot;no&quot;), ordered = TRUE),
-    rideable_type = factor(rideable_type, levels = c(&quot;docked_bike&quot;, &quot;electric_bike&quot;,
-        &quot;classic_bike&quot;), ordered = TRUE), member_casual = factor(member_casual, levels = c(&quot;member&quot;,
-        &quot;casual&quot;), ordered = TRUE), date_season = factor(date_season, levels = c(&quot;winter&quot;,
-        &quot;spring&quot;, &quot;summer&quot;, &quot;fall&quot;), ordered = TRUE), date_hour = factor(date_hour,
-        levels = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
-            18, 19, 20, 21, 22, 23), ordered = TRUE), day_time = factor(day_time,
-        levels = c(&quot;dawn&quot;, &quot;morning&quot;, &quot;afternoon&quot;, &quot;night&quot;), ordered = TRUE)) |&gt;
+    relocate(start_station_name, .before = trip_route) |&gt;
+    select(-(started_at:end_lng)) |&gt;
+    mutate(is_weekend = factor(is_weekend, levels = c(&quot;yes&quot;, &quot;no&quot;), ordered = TRUE),
+        rideable_type = factor(rideable_type, levels = c(&quot;docked_bike&quot;, &quot;electric_bike&quot;,
+            &quot;classic_bike&quot;), ordered = TRUE), member_casual = factor(member_casual,
+            levels = c(&quot;member&quot;, &quot;casual&quot;), ordered = TRUE), date_season = factor(date_season,
+            levels = c(&quot;winter&quot;, &quot;spring&quot;, &quot;summer&quot;, &quot;fall&quot;), ordered = TRUE), date_hour = factor(date_hour,
+            levels = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+                17, 18, 19, 20, 21, 22, 23), ordered = TRUE), day_time = factor(day_time,
+            levels = c(&quot;dawn&quot;, &quot;morning&quot;, &quot;afternoon&quot;, &quot;night&quot;), ordered = TRUE)) |&gt;
     filter(trip_duration &gt; 2)  # Only taking in account trips Higher than 2 minutes</code></pre>
 <ul>
 <li>Checking the data</li>
 </ul>
 <pre class="r"><code>glimpse(bikeshare_data)</code></pre>
 <pre><code>Rows: 7,848,936
-Columns: 12
+Columns: 21
 $ ride_id            &lt;chr&gt; &quot;762198876D69004D&quot;, &quot;BEC9C9FBA0D4CF1B&quot;, &quot;D2FD8EA432…
 $ rideable_type      &lt;ord&gt; docked_bike, docked_bike, docked_bike, docked_bike,…
+$ started_at         &lt;dttm&gt; 2020-07-09 15:22:02, 2020-07-24 23:56:30, 2020-07-…
+$ ended_at           &lt;dttm&gt; 2020-07-09 15:25:52, 2020-07-25 00:20:17, 2020-07-…
+$ trip_route         &lt;chr&gt; &quot;Ritchie Ct &amp; Banks St to Wells St &amp; Evergreen Ave&quot;…
+$ start_station_name &lt;chr&gt; &quot;Ritchie Ct &amp; Banks St&quot;, &quot;Halsted St &amp; Roscoe St&quot;, …
+$ start_station_id   &lt;chr&gt; &quot;180&quot;, &quot;299&quot;, &quot;329&quot;, &quot;181&quot;, &quot;268&quot;, &quot;635&quot;, &quot;113&quot;, &quot;2…
+$ end_station_name   &lt;chr&gt; &quot;Wells St &amp; Evergreen Ave&quot;, &quot;Broadway &amp; Ridge Ave&quot;,…
+$ end_station_id     &lt;chr&gt; &quot;291&quot;, &quot;461&quot;, &quot;156&quot;, &quot;94&quot;, &quot;301&quot;, &quot;289&quot;, &quot;140&quot;, &quot;31…
+$ start_lat          &lt;dbl&gt; 41.90687, 41.94367, 41.93259, 41.89076, 41.91172, 4…
+$ start_lng          &lt;dbl&gt; -87.62622, -87.64895, -87.63643, -87.63170, -87.626…
+$ end_lat            &lt;dbl&gt; 41.90672, 41.98404, 41.93650, 41.91831, 41.90799, 4…
+$ end_lng            &lt;dbl&gt; -87.63483, -87.66027, -87.64754, -87.63628, -87.631…
 $ member_casual      &lt;ord&gt; member, member, casual, casual, member, casual, mem…
 $ trip_duration      &lt;dbl&gt; 3.833333, 23.783333, 7.250000, 20.933333, 5.133333,…
 $ weekday_day        &lt;ord&gt; qui, sex, qua, sex, sáb, ter, qui, seg, qui, seg, s…
@@ -2197,9 +2239,7 @@ $ is_weekend         &lt;ord&gt; no, no, no, no, yes, no, no, no, no, no, no, no
 $ date_month         &lt;ord&gt; jul, jul, jul, jul, jul, jul, jul, jul, jul, jul, j…
 $ date_hour          &lt;ord&gt; 15, 23, 19, 19, 10, 16, 11, 16, 11, 18, 15, 18, 9, …
 $ date_season        &lt;ord&gt; summer, summer, summer, summer, summer, summer, sum…
-$ day_time           &lt;ord&gt; afternoon, night, night, night, morning, afternoon,…
-$ start_station_name &lt;chr&gt; &quot;Ritchie Ct &amp; Banks St&quot;, &quot;Halsted St &amp; Roscoe St&quot;, …
-$ trip_route         &lt;chr&gt; &quot;Ritchie Ct &amp; Banks St to Wells St &amp; Evergreen Ave&quot;…</code></pre>
+$ day_time           &lt;ord&gt; afternoon, night, night, night, morning, afternoon,…</code></pre>
 </div>
 </div>
 <div id="analyse-phase" class="section level2">
@@ -2260,22 +2300,22 @@ bottom: -1ex;
 </style>
  <font color="MidnightBlue"><div align="center"><span style="font-weight:bold">Statistical Description Summary <br><br> 9  Variables   7848936  Observations</span></div></font> <hr class="thinhr"> <span style="font-weight:bold">rideable_type</span><div style="float: right; text-align: right;"><img src="data:image/png;base64,
 iVBORw0KGgoAAAANSUhEUgAAAAoAAAANCAMAAACn6Q83AAAAIVBMVEUAAAACAgI3Nzc7OztAQEBBQUGpqam3t7fa2trr6+v///+CA1+sAAAANklEQVQImWPghAEGBi4YgDDZ2cFMNiDJygpmMgJJFhYwkwGJycHBwcQEJFBFSWECrWdmBrkBABA2A5lSMhcAAAAAAElFTkSuQmCC" alt="image" /></div> <style>
- .hmisctable767737 {
+ .hmisctable801063 {
  border: none;
  font-size: 85%;
  }
- .hmisctable767737 td {
+ .hmisctable801063 td {
  text-align: center;
  padding: 0 1ex 0 1ex;
  }
- .hmisctable767737 th {
+ .hmisctable801063 th {
  color: MidnightBlue;
  text-align: center;
  padding: 0 1ex 0 1ex;
  font-weight: normal;
  }
  </style>
- <table class="hmisctable767737">
+ <table class="hmisctable801063">
  <tr><th>n</th><th>missing</th><th>distinct</th></tr>
  <tr><td>7848936</td><td>0</td><td>3</td></tr>
  </table>
@@ -2285,22 +2325,22 @@ iVBORw0KGgoAAAANSUhEUgAAAAoAAAANCAMAAACn6Q83AAAAIVBMVEUAAAACAgI3Nzc7OztAQEBBQUGp
  Proportion         0.277         0.311         0.413
  </pre>
  <hr class="thinhr"> <span style="font-weight:bold">member_casual</span> <style>
- .hmisctable612467 {
+ .hmisctable835406 {
  border: none;
  font-size: 85%;
  }
- .hmisctable612467 td {
+ .hmisctable835406 td {
  text-align: center;
  padding: 0 1ex 0 1ex;
  }
- .hmisctable612467 th {
+ .hmisctable835406 th {
  color: MidnightBlue;
  text-align: center;
  padding: 0 1ex 0 1ex;
  font-weight: normal;
  }
  </style>
- <table class="hmisctable612467">
+ <table class="hmisctable835406">
  <tr><th>n</th><th>missing</th><th>distinct</th></tr>
  <tr><td>7848936</td><td>0</td><td>2</td></tr>
  </table>
@@ -2311,63 +2351,63 @@ iVBORw0KGgoAAAANSUhEUgAAAAoAAAANCAMAAACn6Q83AAAAIVBMVEUAAAACAgI3Nzc7OztAQEBBQUGp
  </pre>
  <hr class="thinhr"> <span style="font-weight:bold">trip_duration</span><div style="float: right; text-align: right;"><img src="data:image/png;base64,
 iVBORw0KGgoAAAANSUhEUgAAAJcAAAANCAMAAACTvAxuAAAAn1BMVEUFBQUGBgZDQ0NMTExNTU1OTk5PT09QUFBRUVFSUlJTU1NUVFRVVVVXV1dZWVlaWlpbW1tcXFxdXV1eXl5fX19gYGBhYWFiYmJjY2NkZGRlZWVmZmZnZ2doaGhpaWlqampra2tsbGxwcHB6enp9fX2YmJijo6OkpKSvr6+zs7O1tbW4uLi+vr7IyMja2trg4ODk5OTl5eXo6Ojr6+v///+Hl/LIAAAAsElEQVQ4je2VRxKDMBAEhVckAcZgcpCEc8Rh9f+3WfgHunGgz1NdXXtZgojWDmcHUUpZezU7li4zli4zyDiOpB9nx2zvpZYuE5YuM4j+RdaqsqGUCQS882g+ZNTrOYNUltRtZQSxrG27FjFEonVpMaTAOGc0kzl4HQ8hkRV1GrmG9TSstCicRIUW+X/R6alFIoKNbNzP9P22lwf74jmF4Hb3taigL7zGiMfKeR9Erhc/emB1+4T2Oi8AAAAASUVORK5CYII=" alt="image" /></div> <style>
- .hmisctable970095 {
+ .hmisctable761613 {
  border: none;
  font-size: 74%;
  }
- .hmisctable970095 td {
+ .hmisctable761613 td {
  text-align: center;
  padding: 0 1ex 0 1ex;
  }
- .hmisctable970095 th {
+ .hmisctable761613 th {
  color: MidnightBlue;
  text-align: center;
  padding: 0 1ex 0 1ex;
  font-weight: normal;
  }
  </style>
- <table class="hmisctable970095">
+ <table class="hmisctable761613">
  <tr><th>n</th><th>missing</th><th>distinct</th><th>Info</th><th>Mean</th><th>Gmd</th><th>.05</th><th>.10</th><th>.25</th><th>.50</th><th>.75</th><th>.90</th><th>.95</th></tr>
  <tr><td>7848936</td><td>0</td><td>31695</td><td>1</td><td>24.29</td><td>27.51</td><td> 3.600</td><td> 4.650</td><td> 7.433</td><td>13.017</td><td>23.617</td><td>40.867</td><td>62.300</td></tr>
  </table>
  <style>
- .hmisctable822970 {
+ .hmisctable936387 {
  border: none;
  font-size: 85%;
  }
- .hmisctable822970 td {
+ .hmisctable936387 td {
  text-align: right;
  padding: 0 1ex 0 1ex;
  }
- .hmisctable822970 th {
+ .hmisctable936387 th {
  color: Black;
  text-align: center;
  padding: 0 1ex 0 1ex;
  font-weight: bold;
  }
  </style>
- <table class="hmisctable822970">
+ <table class="hmisctable936387">
  <tr><td><font color="MidnightBlue">lowest</font> :</td><td>    2.016667</td><td>    2.033333</td><td>    2.050000</td><td>    2.066667</td><td>    2.083333</td></tr>
  <tr><td><font color="MidnightBlue">highest</font>:</td><td>52701.383333</td><td>53921.600000</td><td>54283.350000</td><td>55691.683333</td><td>55944.150000</td></tr>
  </table>
  <hr class="thinhr"> <span style="font-weight:bold">weekday_day</span><div style="float: right; text-align: right;"><img src="data:image/png;base64,
 iVBORw0KGgoAAAANSUhEUgAAABYAAAANCAMAAACae25RAAAAbFBMVEUAAAAFBQUvLy8zMzM3Nzc6Ojo7Ozs+Pj5AQEBBQUFDQ0NJSUlMTExSUlKYmJigoKCjo6OkpKSnp6esrKyysrK0tLS2tra7u7u+vr7Dw8PGxsbJycnQ0NDX19fa2trg4ODr6+v4+Pj6+vr////xZ61IAAAAcElEQVQYla3QywqDQBQD0FTHdzt2fNZqr9fm//9RETeCIILZ5SyyCPQgDniN3KcfWAGo1jKRTcPp/Wfw3NhZ/h4Dk4QffGmyjTPDDi3jmC26E7YSeVIgF2MkRyFeJPbyyC3sNPW1RqlhqCVq9dPlkxmAYRZSICHP5QAAAABJRU5ErkJggg==" alt="image" /></div> <style>
- .hmisctable532255 {
+ .hmisctable277945 {
  border: none;
  font-size: 85%;
  }
- .hmisctable532255 td {
+ .hmisctable277945 td {
  text-align: center;
  padding: 0 1ex 0 1ex;
  }
- .hmisctable532255 th {
+ .hmisctable277945 th {
  color: MidnightBlue;
  text-align: center;
  padding: 0 1ex 0 1ex;
  font-weight: normal;
  }
  </style>
- <table class="hmisctable532255">
+ <table class="hmisctable277945">
  <tr><th>n</th><th>missing</th><th>distinct</th></tr>
  <tr><td>7848936</td><td>0</td><td>7</td></tr>
  </table>
@@ -2377,22 +2417,22 @@ iVBORw0KGgoAAAANSUhEUgAAABYAAAANCAMAAACae25RAAAAbFBMVEUAAAAFBQUvLy8zMzM3Nzc6Ojo7
  Proportion   0.152   0.123   0.129   0.135   0.134   0.147   0.179
  </pre>
  <hr class="thinhr"> <span style="font-weight:bold">is_weekend</span> <style>
- .hmisctable669859 {
+ .hmisctable960841 {
  border: none;
  font-size: 85%;
  }
- .hmisctable669859 td {
+ .hmisctable960841 td {
  text-align: center;
  padding: 0 1ex 0 1ex;
  }
- .hmisctable669859 th {
+ .hmisctable960841 th {
  color: MidnightBlue;
  text-align: center;
  padding: 0 1ex 0 1ex;
  font-weight: normal;
  }
  </style>
- <table class="hmisctable669859">
+ <table class="hmisctable960841">
  <tr><th>n</th><th>missing</th><th>distinct</th></tr>
  <tr><td>7848936</td><td>0</td><td>2</td></tr>
  </table>
@@ -2403,22 +2443,22 @@ iVBORw0KGgoAAAANSUhEUgAAABYAAAANCAMAAACae25RAAAAbFBMVEUAAAAFBQUvLy8zMzM3Nzc6Ojo7
  </pre>
  <hr class="thinhr"> <span style="font-weight:bold">date_month</span><div style="float: right; text-align: right;"><img src="data:image/png;base64,
 iVBORw0KGgoAAAANSUhEUgAAACUAAAANCAMAAAAZv1dqAAAAt1BMVEUAAAAbGxseHh4hISEkJCQmJiYnJycpKSktLS07Ozs/Pz9HR0dMTExPT09SUlJTU1NYWFhZWVlfX19hYWFjY2N2dnZ7e3t/f3+Dg4OFhYWKioqLi4uQkJCenp6hoaGmpqatra2wsLCxsbGzs7O1tbW8vLy+vr7CwsLExMTHx8fLy8vR0dHZ2dna2trb29vh4eHi4uLj4+Pl5eXo6Ojr6+vu7u7w8PD09PT19fX29vb4+Pj7+/v///+mzlgTAAAAqElEQVQYlY3RWxOBUBQF4EXpuCRFpIRIcjtFTnI5//93YcYw3Uzrcc03az9ssHxUwgyEJyv6NuD5aBK3kKyx+TblyoNfTd1rywoqhl2itkGRopmIXSoLdIj9DPMdRnThv8r01vjAJS291dCzF6+Y5JTQ57fLT0XtYwKrSA1aH+V3Hj68EtVrYrriyZnbiP8qIjOdMBOBCyeEwUSFKeL7jw7cACarq0wmTwbkTl7wl310AAAAAElFTkSuQmCC" alt="image" /></div> <style>
- .hmisctable987345 {
+ .hmisctable393810 {
  border: none;
  font-size: 85%;
  }
- .hmisctable987345 td {
+ .hmisctable393810 td {
  text-align: center;
  padding: 0 1ex 0 1ex;
  }
- .hmisctable987345 th {
+ .hmisctable393810 th {
  color: MidnightBlue;
  text-align: center;
  padding: 0 1ex 0 1ex;
  font-weight: normal;
  }
  </style>
- <table class="hmisctable987345">
+ <table class="hmisctable393810">
  <tr><th>n</th><th>missing</th><th>distinct</th></tr>
  <tr><td>7848936</td><td>0</td><td>12</td></tr>
  </table>
@@ -2433,43 +2473,43 @@ iVBORw0KGgoAAAANSUhEUgAAACUAAAANCAMAAAAZv1dqAAAAt1BMVEUAAAAbGxseHh4hISEkJCQmJiYn
  </pre>
  <hr class="thinhr"> <span style="font-weight:bold">date_hour</span><div style="float: right; text-align: right;"><img src="data:image/png;base64,
 iVBORw0KGgoAAAANSUhEUgAAAEkAAAANCAMAAADSZLOUAAABRFBMVEUSEhITExMUFBQVFRUXFxcZGRkbGxsdHR0eHh4fHx8gICAhISEjIyMkJCQlJSUnJycoKCgpKSkqKiorKysuLi4xMTEyMjI0NDQ1NTU2NjY3Nzc4ODg5OTk6Ojo8PDw9PT0+Pj4/Pz9BQUFCQkJDQ0NERERFRUVGRkZISEhJSUlKSkpLS0tMTExOTk5QUFBRUVFSUlJUVFRVVVVWVlZXV1dZWVlaWlpdXV1eXl5gYGBhYWFjY2NkZGRlZWVmZmZoaGhpaWlra2ttbW1ubm5wcHBzc3N/f3+CgoKDg4OLi4uNjY2bm5ugoKCkpKSlpaWnp6erq6uvr6+wsLCxsbGysrK1tbW8vLzIyMjLy8vR0dHS0tLV1dXX19fa2tre3t7g4ODl5eXp6enr6+vu7u7v7+/z8/P09PT29vb39/f4+Pj7+/v///+efwciAAABK0lEQVQokaXTSVPCYAwG4CqCiiIIpbZCBUEsItWKAloRBPd9VxQ/0YgLvv//Lj116Exxiu8hh0zmmeQQjvqIGqDXF2uTg9PcnSIXQkWy9p1LGm9Ief9/pK9P7K6Y0nerD+lgH5trKChQBVOqhp1K5xdIxqHIyEhdUnG8W2J2eWwY9aHOxAiLiGxGYLM8mwsxxc8WJlh2jC2NsLNDc95mp+YbUhu4vcf8MuJJ2510L9rvva+TChBUTC9CVnpKo9ibxPONndQk8JohSZm/pS0Pqm40LjvSSd0qTRWdSdtD2HF1pMEa5CNcP6HVxscPjq8QyjmWagPgiCuRSyfPOgXLFC6TT6OASsEs8WkSUiQmKBqjWJQSIqUESvOUDRp/p/lo1Uv5YSq6SXdRiaNf0RE0hWa7NGsAAAAASUVORK5CYII=" alt="image" /></div> <style>
- .hmisctable494834 {
+ .hmisctable862000 {
  border: none;
  font-size: 85%;
  }
- .hmisctable494834 td {
+ .hmisctable862000 td {
  text-align: center;
  padding: 0 1ex 0 1ex;
  }
- .hmisctable494834 th {
+ .hmisctable862000 th {
  color: MidnightBlue;
  text-align: center;
  padding: 0 1ex 0 1ex;
  font-weight: normal;
  }
  </style>
- <table class="hmisctable494834">
+ <table class="hmisctable862000">
  <tr><th>n</th><th>missing</th><th>distinct</th></tr>
  <tr><td>7848936</td><td>0</td><td>24</td></tr>
  </table>
  <span style="font-size: 85%;"><font color="MidnightBlue">lowest</font> : 0  1  2  3  4  ,  <font color="MidnightBlue">highest</font>: 19 20 21 22 23</span> <hr class="thinhr"> <span style="font-weight:bold">date_season</span><div style="float: right; text-align: right;"><img src="data:image/png;base64,
 iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAMAAABFNRROAAAAM1BMVEUAAAAJCQkoKChAQECWlpaioqKwsLC+vr7Ozs7R0dHZ2dna2trr6+vs7Oz19fX4+Pj///8DviQ6AAAAQklEQVQImWPggQB2BlYgySAAARwMbECSTB4fAzcEsDGwcHMyguS4mXnBcrwMIB4bAwcxPCZ+ZB4DFw8rAzvYnVwMAMFJBwCHxtLLAAAAAElFTkSuQmCC" alt="image" /></div> <style>
- .hmisctable168937 {
+ .hmisctable501855 {
  border: none;
  font-size: 85%;
  }
- .hmisctable168937 td {
+ .hmisctable501855 td {
  text-align: center;
  padding: 0 1ex 0 1ex;
  }
- .hmisctable168937 th {
+ .hmisctable501855 th {
  color: MidnightBlue;
  text-align: center;
  padding: 0 1ex 0 1ex;
  font-weight: normal;
  }
  </style>
- <table class="hmisctable168937">
+ <table class="hmisctable501855">
  <tr><th>n</th><th>missing</th><th>distinct</th></tr>
  <tr><td>7848936</td><td>0</td><td>4</td></tr>
  </table>
@@ -2480,22 +2520,22 @@ iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAMAAABFNRROAAAAM1BMVEUAAAAJCQkoKChAQECWlpaioqKw
  </pre>
  <hr class="thinhr"> <span style="font-weight:bold">day_time</span><div style="float: right; text-align: right;"><img src="data:image/png;base64,
 iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAMAAABFNRROAAAAPFBMVEUAAAAZGRklJSWWlpaampqioqKsrKywsLC0tLS+vr7KysrOzs7Z2dna2trr6+vs7Oz39/f4+Pj+/v7///+bnvM6AAAAR0lEQVQImY3OyQ6AIBRD0euAT4Si6P//qwwxcUkXTU66KanH40rz9ASs9KjyXJW3u+kESSu7jEUHdTPCt41ruv4iJodvPyMvIeIH9Us6klwAAAAASUVORK5CYII=" alt="image" /></div> <style>
- .hmisctable774743 {
+ .hmisctable559019 {
  border: none;
  font-size: 85%;
  }
- .hmisctable774743 td {
+ .hmisctable559019 td {
  text-align: center;
  padding: 0 1ex 0 1ex;
  }
- .hmisctable774743 th {
+ .hmisctable559019 th {
  color: MidnightBlue;
  text-align: center;
  padding: 0 1ex 0 1ex;
  font-weight: normal;
  }
  </style>
- <table class="hmisctable774743">
+ <table class="hmisctable559019">
  <tr><th>n</th><th>missing</th><th>distinct</th></tr>
  <tr><td>7848936</td><td>0</td><td>4</td></tr>
  </table>
@@ -3259,8 +3299,9 @@ aft: 1611363, nig: 1072527, mor: 624405, daw: 196460
 <li><p>Regarding the difference in usage between members and casual
 users, we can observe the following:</p>
 <ul>
-<li><p>The trip duration is 145% longer for Casual Users. Averaging
-36.15 min for casual users and 14.71 min for members;</p></li>
+<li><p>The trip duration is 2,45 times longer for casual users than
+members. Averaging 36.15 min for casual users and 14.71 min for
+members;</p></li>
 <li><p>Regarding the type of bicycle, the most used for members, in
 descending order, are “classic”, “eletric”, and “docked”. For casual
 users they are “classic”, “docked” and “eletric”;</p></li>
@@ -3636,7 +3677,7 @@ theme(legend.position = &quot;none&quot;) + labs(title = &quot;10 most used star
 <ul>
 <li>Different of members, casual user use service more often during the
 weekend;</li>
-<li>Also have the mean duration of the trips 145% higher than
+<li>Also have the mean duration of the trips 2,45 times longer than
 members;</li>
 <li>They have the highest trip duration during dawn (from 12 am to 5
 am). With the pic at 2 am;</li>

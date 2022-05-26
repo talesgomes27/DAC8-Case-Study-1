@@ -342,7 +342,7 @@ bikeshare_skim_member |>
 
 -   Regarding the difference in usage between members and casual users, we can observe the following:
 
-    -   The trip duration is 145% longer for Casual Users. Averaging 36.15 min for casual users and 14.71 min for members;
+    -   The trip duration is 2,45 times longer for casual users than members. Averaging 36.15 min for casual users and 14.71 min for members;
 
     -   Regarding the type of bicycle, the most used for members, in descending order, are "classic", "eletric", and "docked". For casual users they are "classic", "docked" and "eletric";
 
@@ -674,7 +674,7 @@ bikeshare_data |>
 
 ### Key findings
  - Different of members, casual user use service more often during the weekend;
- - Also have the mean duration of the trips 145% higher than members;
+ - Also have the mean duration of the trips 2,45 times longer than members;
  - They have the highest trip duration during dawn (from 12 am to 5 am). With the pic at 2 am;
  - Casual users use the service more from July to October;
  - Although February is the month with the least trips, it is also the month with the longest duration of trips;
