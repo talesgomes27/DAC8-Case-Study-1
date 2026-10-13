@@ -14,6 +14,24 @@ load_trip_data <- function(source_path = NULL) {
   requireNamespace("dplyr", quietly = TRUE)
   requireNamespace("fs", quietly = TRUE)
   
+  # 0. Prioridade 1: Carrega Apache Parquet otimizado se disponivel
+  parquet_candidates <- c(
+    "data/processed/cyclistic_trips_cleaned.parquet",
+    "../data/processed/cyclistic_trips_cleaned.parquet"
+  )
+  for (pq in parquet_candidates) {
+    if (fs::file_exists(pq) && requireNamespace("nanoparquet", quietly = TRUE)) {
+      message("Carregando dataset otimizado em Apache Parquet: ", pq)
+      t0 <- Sys.time()
+      df <- nanoparquet::read_parquet(pq)
+      t1 <- Sys.time()
+      message(sprintf("Carga Parquet concluida em %.2f s. Registros: %s linhas e %d colunas.",
+                      as.numeric(difftime(t1, t0, units = "secs")),
+                      format(nrow(df), big.mark = ".", decimal.mark = ","), ncol(df)))
+      return(df)
+    }
+  }
+  
   target_files <- character(0)
   
   # 1. Verifica caminhos de dados completos se nenhum for explicitamente passado

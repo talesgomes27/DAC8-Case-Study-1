@@ -34,6 +34,11 @@ clean_and_transform <- function(df, min_duration_mins = 2, max_duration_mins = 1
   requireNamespace("dplyr", quietly = TRUE)
   requireNamespace("lubridate", quietly = TRUE)
   
+  if ("trip_duration_min" %in% names(df) && "distance_km" %in% names(df)) {
+    message("Dataset ja higienizado e enriquecido com variaveis espaciais (carga direta).")
+    return(df)
+  }
+  
   initial_rows <- nrow(df)
   
   cleaned_df <- df |>
