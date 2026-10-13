@@ -187,7 +187,7 @@ stats_res$descriptive |>
   knitr::kable(caption = "Estatísticas Descritivas Canônicas por Categoria de Ciclista")
 ```
 
-* **Destaque Descritivo**: A moda do dia da semana para membros é a **terça-feira** (dia de expediente comercial pleno). Para ciclistas casuais, a moda é o **sábado**, demonstrando a vocação para passeios e recreação.
+* **Destaque Descritivo**: A moda do dia da semana para membros é a **quarta-feira** (376.612 viagens no ápice do expediente corporativo da semana). Para ciclistas casuais, a moda é o **sábado** (429.785 viagens), confirmando a preferência por lazer e fins de semana.
 
 ### 4.2. Inferência Estatística e Tamanhos de Efeito
 
@@ -221,7 +221,7 @@ stats_res$odds_ratios |>
   knitr::kable(caption = "Resultados da Regressão Logística e Razões de Chance (Odds Ratios)")
 ```
 
-* **Interpretação dos Odds Ratios**: Viagens realizadas nos horários de pico comercial (7h–9h e 16h–18h) apresentam um **Odds Ratio próximo de 4,0**. Isso indica que a probabilidade de uma viagem ser de membro anual quadruplica durante os horários de entrada e saída do trabalho.
+* **Interpretação dos Odds Ratios**: Viagens realizadas nos horários de pico comercial (7h–9h e 16h–18h) apresentam um **Odds Ratio de 1,35** (IC 95%: [1,34; 1,35], $p < 0,001$), elevando em 35% as chances de a viagem pertencer a um membro anual. Já viagens no fim de semana apresentam $\text{OR} = 0,55$ (redução de 45% na chance de ser membro), quantificando matematicamente o forte perfil de lazer dos ciclistas casuais.
 
 ### 4.4. Segmentação Quantitativa dos Ciclistas Casuais
 Decompusemos a base de casuais em três personas quantificadas:
@@ -296,7 +296,7 @@ plot_top_stations(trips, top_n = 8)
 plot_round_trips(trips)
 ```
 
-Ciclistas casuais registram taxa de viagens circulares quase 5 vezes superior à dos membros, comprovando o uso para recreação e passeios na orla do Lago Michigan.
+Ciclistas casuais registram taxa de viagens circulares mais de 4 vezes superior à dos membros (13,7% contra 3,3%), comprovando o uso para recreação e passeios na orla do Lago Michigan.
 
 ### 5.7. Forest Plot da Regressão Logística
 

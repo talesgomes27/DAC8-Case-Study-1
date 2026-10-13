@@ -19,15 +19,15 @@ A análise comprova que os dois grupos utilizam o sistema com propósitos diverg
 * **Governança ROCCC e Tratamento de PII**: Avaliação formal de confiabilidade (*Reliable, Original, Comprehensive, Current, Cited*). Como a base não armazena identificadores pessoais por razões de privacidade, a unidade de análise é a **viagem**, contornando a restrição através de padrões agregados de rotas e janelas horárias.
 * **Funil de Integridade em Estágios**: Descarte documentado de viagens com timestamps invertidos, testes de doca com falha ($< 2$ minutos), anomalias de manutenção ou bicicletas esquecidas ($> 24$ horas) e coordenadas geográficas fora da malha de Chicago.
 * **Engenharia de Atributos Espaço-Temporais**: Cálculo de distância geodésica em quilômetros via fórmula vetorizada de Haversine, velocidade média aproximada, indicador de rotas circulares (origem igual ao destino) e calibração das estações climáticas locais.
-* **Estatística Descritiva Canônica**: Cálculo de médias, medianas, desvio-padrão, intervalo interquartil (IQR), limites e a moda do dia da semana (terça-feira para membros; sábado para casuais).
+* **Estatística Descritiva Canônica**: Cálculo de médias, medianas, desvio-padrão, intervalo interquartil (IQR), limites e a moda do dia da semana (quarta-feira para membros; sábado para casuais).
 * **Inferência Não Paramétrica e Tamanho de Efeito**:
-  - Teste de postos de Wilcoxon-Mann-Whitney confirma diferença significativa nas durações ($W = 1.34 \times 10^7$, $p < 2.2 \times 10^{-16}$) com tamanho de efeito substantivo ($r$ de Rosenthal $= 0.44$).
-  - Testes Qui-quadrado de independência com cálculo de $V$ de Cramér para tipos de dia, modalidades de bicicleta e circuitos fechados.
-* **Modelo Logístico Explicativo**: Regressão logística binominal reportando *Odds Ratios* ($\text{OR}$) com intervalos de confiança de 95%. Viagens em horários de pico comercial (7h–9h e 16h–18h) apresentam $\text{OR} \approx 4.0$, quadruplicando a propensão de comportamento de membro.
+  - Teste de postos de Wilcoxon-Mann-Whitney confirma diferença significativa nas durações ($W = 3.19 \times 10^{12}$, $p < 2.2 \times 10^{-16}$).
+  - Testes Qui-quadrado de independência com cálculo de $V$ de Cramér para tipos de dia, modalidades de bicicleta e circuitos fechados (casuais realizam mais de 4x mais rotas circulares: 13,7% vs 3,3%).
+* **Modelo Logístico Explicativo**: Regressão logística binomial reportando *Odds Ratios* ($\text{OR}$) com intervalos de confiança de 95%. Viagens em horários de pico comercial (7h–9h e 16h–18h) apresentam $\text{OR} = 1,35$ ($p < 0,001$), elevando em 35% a propensão de comportamento de membro, enquanto fins de semana reduzem essa chance em 45% ($\text{OR} = 0,55$).
 * **Segmentação em Três Personas de Casuais**:
-  - *Comutador Oculto* (~10,7% do volume casual): Viagens em dias úteis nos horários de pico comercial, ponto a ponto e com duração inferior a 45 minutos. Público prioritário para campanhas de conversão.
-  - *Lazer de Fim de Semana* (~49,5%): Trajetos recreativos aos sábados, domingos e circuitos fechados na orla.
-  - *Espontâneo / Noturno* (~39,7%): Viagens esporádicas fora dos horários de expediente.
+  - *Comutador Oculto* (16,8% do volume casual, somando 316.203 viagens): Viagens em dias úteis nos horários de pico comercial, ponto a ponto e com duração inferior a 45 minutos. Público prioritário para campanhas de conversão.
+  - *Lazer de Fim de Semana* (49,3%): Trajetos recreativos aos sábados, domingos e circuitos fechados na orla.
+  - *Espontâneo / Noturno* (33,9%): Viagens esporádicas fora dos horários de expediente.
 * **Recomendações com Desenho de Teste A/B**: Campanha digital in-app com calculadora de economia para o comutador oculto, criação de passe sazonal de primavera/verão e plano experimental de validação com grupo de controle.
 
 ---
