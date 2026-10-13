@@ -1,0 +1,110 @@
+/* custom.scss - Design System para o Relatório Executivo Cyclistic */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --cyclistic-navy: #1E3A8A;
+  --cyclistic-amber: #D97706;
+  --cyclistic-slate: #0F172A;
+  --cyclistic-muted: #475569;
+  --cyclistic-bg-light: #F8FAFC;
+  --cyclistic-border: #E2E8F0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--cyclistic-slate);
+  line-height: 1.65;
+  text-align: left; /* Elimina o alinhamento justificado e rios tipograficos */
+}
+
+code, pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9em;
+}
+
+h1, h2, h3, h4 {
+  color: var(--cyclistic-slate);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+h1.title {
+  color: var(--cyclistic-navy);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: var(--cyclistic-muted);
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+/* Painel de Metricas / Cartoes de KPI */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  margin: 1.75rem 0 2rem 0;
+}
+
+.kpi-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--cyclistic-border);
+  border-radius: 8px;
+  padding: 1.25rem 1rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+  text-align: center;
+  transition: transform 0.15s ease-in-out;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.1);
+}
+
+.kpi-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #64748B;
+  letter-spacing: 0.06em;
+}
+
+.kpi-value {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--cyclistic-navy);
+  margin: 0.3rem 0;
+  line-height: 1.1;
+}
+
+.kpi-value.accent {
+  color: var(--cyclistic-amber);
+}
+
+.kpi-sub {
+  font-size: 0.82rem;
+  color: var(--cyclistic-muted);
+}
+
+/* Tabelas e blocos informativos */
+.table {
+  border-color: var(--cyclistic-border);
+  font-size: 0.95rem;
+}
+
+.table thead th {
+  background-color: var(--cyclistic-bg-light);
+  color: #334155;
+  font-weight: 600;
+  border-bottom: 2px solid var(--cyclistic-border);
+}
+
+/* Callouts e destaques */
+.callout {
+  border-left-width: 4px;
+  border-radius: 6px;
+  margin: 1.5rem 0;
+}

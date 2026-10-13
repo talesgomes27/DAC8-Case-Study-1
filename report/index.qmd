@@ -1,0 +1,205 @@
+---
+title: "Cyclistic Bike-Share: Análise de Padrões e Conversão de Usuários"
+subtitle: "Estudo de caso para conversão de ciclistas casuais em membros anuais"
+author: "Tales Gomes"
+date: last-modified
+lang: pt-BR
+format:
+  html:
+    theme: cosmo
+    css: custom.scss
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    toc-title: "Navegação"
+    code-fold: true
+    code-summary: "Exibir código R"
+    code-tools: true
+    smooth-scroll: true
+    embed-resources: true
+    grid:
+      body-width: 1050px
+      sidebar-width: 260px
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r setup, include=FALSE}
+# Carregamento dos modulos desacoplados do projeto
+source("../R/01_ingest.R")
+source("../R/02_clean_and_transform.R")
+source("../R/03_statistical_analysis.R")
+source("../R/04_theme_cyclistic.R")
+
+# Executa o pipeline de ingestao e tratamento
+raw_trips <- load_trip_data()
+trips <- clean_and_transform(raw_trips)
+stats_results <- run_statistical_tests(trips)
+
+# Metricas do sumario executivo
+total_trips <- nrow(trips)
+pct_members <- round(mean(trips$member_casual == "Membro") * 100, 1)
+pct_casuals <- round(mean(trips$member_casual == "Casual") * 100, 1)
+med_dur_member <- stats_results$duration_summary$mediana_min[stats_results$duration_summary$member_casual == "Membro"]
+med_dur_casual <- stats_results$duration_summary$mediana_min[stats_results$duration_summary$member_casual == "Casual"]
+commuter_pct <- stats_results$conversion_metrics$commuter_pct
+```
+
+## 1. Sumário Executivo
+
+A Cyclistic opera uma rede de bicicletas compartilhadas em Chicago com estações espalhadas pelo centro e orla da cidade. A liderança de marketing identificou que membros anuais geram maior previsibilidade financeira e margem operacional por cliente. O objetivo desta análise é identificar como ciclistas casuais e membros anuais utilizam o serviço e desenhar estratégias orientadas a dados para converter usuários esporádicos em assinantes.
+
+```{=html}
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-title">Total Analisado</div>
+    <div class="kpi-value">`r format(total_trips, big.mark = ".", decimal.mark = ",")`</div>
+    <div class="kpi-sub">Viagens válidas higienizadas</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-title">Membros Anuais</div>
+    <div class="kpi-value">`r pct_members`%</div>
+    <div class="kpi-sub">Perfil de mobilidade diária</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-title">Duração Mediana Casual</div>
+    <div class="kpi-value accent">`r med_dur_casual` min</div>
+    <div class="kpi-sub">vs `r med_dur_member` min (Membros)</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-title">Potencial de Conversão</div>
+    <div class="kpi-value accent">`r commuter_pct`%</div>
+    <div class="kpi-sub">Casuais em horários de pico</div>
+  </div>
+</div>
+```
+
+::: {.callout-note appearance="simple"}
+### Conclusão Central de Negócio
+Os dois grupos utilizam o sistema com objetivos distintos. Membros anuais utilizam as bicicletas para deslocamento utilitário entre a casa e o trabalho durante a semana. Ciclistas casuais concentram o uso em fins de semana e tardes ensolaradas para lazer, pedalando pelo dobro do tempo. No entanto, aproximadamente **`r commuter_pct`% das viagens de casuais** ocorrem exatamente nos horários de pico de dias úteis com origem e destino distintos. Esse grupo específico representa o alvo prioritário de conversão.
+:::
+
+---
+
+## 2. Metodologia e Integridade dos Dados
+
+O conjunto de dados abrange registros públicos de viagens da cidade de Chicago disponibilizados pela Motivate International Inc. Para assegurar a reprodutibilidade e a integridade da análise, o pipeline foi desenhado com regras estritas:
+
+1. **Validação Temporal**: O cálculo de duração utiliza `difftime(ended_at, started_at, units = "mins")` para evitar ambiguidades de unidade. Foram descartadas viagens inferiores a 2 minutos (associadas a testes de acoplamento ou trocas de doca com falha) e viagens superiores a 24 horas (bicicletas esquecidas ou anomalias).
+2. **Preservação de Dados Espaciais**: As coordenadas de latitude e longitude foram retidas para cálculo de distância em linha reta via fórmula geodésica de Haversine vetorizada.
+3. **Calibração de Sazonalidade**: A classificação dos meses segue o padrão meteorológico de Chicago no hemisfério norte: Inverno (Dezembro a Fevereiro), Primavera (Março a Maio), Verão (Junho a Agosto) e Outono (Setembro a Novembro).
+
+```{r table-quality}
+# Resumo de integridade por grupo
+trips |>
+  dplyr::group_by(member_casual) |>
+  dplyr::summarise(
+    `Total Viagens` = scales::number(dplyr::n(), big.mark = "."),
+    `Distância Mediana (km)` = scales::number(stats::median(distance_km), accuracy = 0.01, decimal.mark = ","),
+    `Velocidade Média (km/h)` = scales::number(mean(speed_kmh, na.rm = TRUE), accuracy = 0.1, decimal.mark = ","),
+    `Rotas Circulares (%)` = scales::percent(mean(is_round_trip), accuracy = 0.1, decimal.mark = ",")
+  ) |>
+  knitr::kable(align = "lcccc")
+```
+
+---
+
+## 3. Padrões de Uso e Diagnóstico Visual
+
+### 3.1. Dinâmica Horária e Deslocamento ao Trabalho
+
+A distribuição temporal ao longo das 24 horas expõe claramente a rotina de deslocamento utilitário:
+
+```{r plot-hourly, fig.height=4.5}
+plot_trips_by_hour(trips)
+```
+
+Enquanto os membros apresentam dois picos evidentes (às 8h e às 17h, sincronizados com a entrada e saída do expediente corporativo), os ciclistas casuais mantêm uma curva unimodal crescente que atinge o ápice no meio da tarde.
+
+### 3.2. Duração Mediana das Corridas
+
+Ciclistas casuais passam significativamente mais tempo em cada trajeto:
+
+```{r plot-duration, fig.height=4.5}
+plot_duration_by_hour(trips)
+```
+
+A mediana de duração dos ciclistas casuais supera 25 minutos em praticamente todas as horas do dia, chegando a picos ainda maiores na madrugada. Membros anuais raramente ultrapassam 15 minutos, evidenciando trajetos diretos e objetivos.
+
+### 3.3. Comportamento Semanal
+
+A comparação entre dias úteis e finais de semana revela uma inversão de demanda:
+
+```{r plot-weekday, fig.height=4.5}
+plot_trips_by_weekday(trips)
+```
+
+Membros sustentam o volume da operação de segunda a sexta-feira. Nos fins de semana, o volume de ciclistas casuais cresce substancialmente, superando os membros nos dias de sábado e domingo.
+
+### 3.4. Concentração Geográfica das Estações
+
+As estações de início de viagem refletem a motivação do usuário:
+
+```{r plot-stations, fig.height=4.5}
+plot_top_stations(trips, top_n = 8)
+```
+
+Pontos de grande apelo turístico e lazer litorâneo (como *Streeter Dr & Grand Ave*, *Millennium Park* e *Theater on the Lake*) concentram a maior parte do fluxo de partida.
+
+---
+
+## 4. Inferência Estatística e Segmentação
+
+Para além das médias descritivas, aplicamos testes formais de hipótese para certificar que as diferenças observadas não decorrem de flutuações amostrais.
+
+### 4.1. Teste de Wilcoxon-Mann-Whitney (Duração e Distância)
+
+Como o tempo de viagem e as distâncias exibem forte assimetria à direita, utilizamos o teste de postos de Wilcoxon (não paramétrico):
+
+```{r stats-summary}
+stats_results$duration_summary |>
+  dplyr::rename(
+    `Categoria` = member_casual,
+    `Mediana (min)` = mediana_min,
+    `Média (min)` = media_min,
+    `IQR` = iqr_min,
+    `Q25` = q25_min,
+    `Q75` = q75_min,
+    `Total` = total_viagens
+  ) |>
+  knitr::kable(align = "lcccccc")
+```
+
+* **Resultado para Duração**: $W = `r scales::number(stats_results$wilcox_duration$statistic, big.mark = ".", decimal.mark = ",")`$, com valor-p $< 2.2 \times 10^{-16}$. Rejeita-se com alto grau de confiança a hipótese de igualdade nas medianas de tempo de corrida.
+* **Resultado para Distância**: Ciclistas casuais também apresentam maior taxa de viagens circulares (`r scales::percent(mean(trips$is_round_trip[trips$member_casual == "Casual"]), accuracy = 0.1)` contra `r scales::percent(mean(trips$is_round_trip[trips$member_casual == "Membro"]), accuracy = 0.1)` entre membros), confirmando o uso recreativo sem destino funcional.
+
+### 4.2. Segmentação de Casuais com Perfil Comutador
+
+Mapeamos os ciclistas casuais que atendem cumulativamente aos seguintes critérios:
+* Viagens realizadas de segunda a sexta-feira.
+* Partidas concentradas nos horários de pico (7h–9h ou 16h–18h).
+* Rotas ponto-a-ponto com estações de início e fim distintas.
+* Duração inferior a 45 minutos.
+
+Este segmento representa **`r commuter_pct`% do total de viagens casuais**. Embora ainda paguem tarifas avulsas, esses usuários já se comportam exatamente como membros anuais.
+
+---
+
+## 5. Recomendações Estratégicas de Negócio
+
+Com base nos dados levantados, estruturamos três iniciativas para a equipe liderada por Lily Moreno:
+
+### 1. Campanha Direcionada ao Segmento "Comutador Oculto"
+* **Ação**: Disparar comunicação via aplicativo e e-mail direcionada aos usuários casuais que destravam bicicletas entre 7h-9h e 16h-18h em dias úteis.
+* **Mensagem**: Demonstração de economia financeira: *"Você já pedala no horário comercial. Assinando o plano anual, você economiza após 3 viagens por semana."*
+* **Incentivo**: Oferecer o primeiro mês de adesão anual com desconto equivalente ao custo dos passes avulsos já adquiridos nos últimos 30 dias.
+
+### 2. Criação do Passe Sazonal de Primavera/Verão
+* **Ação**: O inverno de Chicago inibe a contratação de assinaturas de 12 meses para ciclistas de lazer. Criar um plano semestral (Maio a Outubro) focado na temporada de clima quente.
+* **Objetivo**: Capturar o excedente do público de lazer que rejeita o plano anual de 12 meses devido à ociosidade no inverno.
+
+### 3. Ações no Ponto de Uso em Estações Turísticas e Parques
+* **Ação**: Instalar totens com QR Codes e notificações por geofencing nas estações com maior volume de casuais (*Streeter Dr*, *Millennium Park* e *Theater on the Lake*).
+* **Mecânica**: Oferecer upgrade para o plano anual imediatamente após o encerramento de corridas longas aos sábados e domingos.

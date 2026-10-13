@@ -10,3 +10,6 @@ database/
 data/raw/
 *.parquet
 presentation/xaringan_DAC8-Case-Study-1_files/
+
+/.quarto/
+**/*.quarto_ipynb

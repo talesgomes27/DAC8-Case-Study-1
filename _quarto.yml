@@ -1,0 +1,10 @@
+project:
+  type: default
+  render:
+    - report/index.qmd
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    smooth-scroll: true
